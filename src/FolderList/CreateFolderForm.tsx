@@ -1,62 +1,78 @@
 import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form"; 
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import { useForm, SubmitHandler } from "react-hook-form";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { DialogType } from "./Constrant/DialogType";
-
- 
+import { FolderFile } from "./Model/FolderFile";
 
 type Inputs = {
-  example: string,
-  exampleRequired: string,
+  name: string;
 };
 
-interface Props { 
-    open: boolean;
-    setOpen: (open: boolean, name: keyof typeof DialogType) => void; 
-    name: keyof typeof DialogType;
-    onDialogCloseFunc?: () => void; 
+interface Props {
+  open: boolean;
+  setOpen: (open: boolean, name: keyof typeof DialogType) => void;
+  name: keyof typeof DialogType;
+  onDialogCloseFunc?: () => void;
+  submitFileFolder: (folderFile: FolderFile) => void;
 }
 
-const CreateFolderForm = ({
-  open,
-  setOpen,
-  name, 
-}:Props) => { 
- 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
+const CreateFolderForm = ({ open, setOpen, name, submitFileFolder }: Props) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log("form data", data);
+    const newFolder: FolderFile = {
+      name: data.name,
+      id: Math.random().toString(),
+      type: "Folder",
+    };
 
-  console.log(watch("example")) // watch input value by passing the name of it
+    submitFileFolder(newFolder);
+    setOpen(false, name);
+  };
+
+  // console.log(watch("name")); // watch input value by passing the name of it
 
   return (
     <div>
-   
-      <Dialog open={open}  onClose={() => setOpen(false, name)}>
+      <Dialog open={open} onClose={() => setOpen(false, name)}>
         <DialogTitle>New Folder</DialogTitle>
         <DialogContent>
-          
-           <form onSubmit={handleSubmit(onSubmit)}> 
-      
-      {/* include validation with required or other standard HTML validation rules */}
-      <input {...register("exampleRequired", { required: true })} placeholder="Name"/>
-      {/* errors will return when field validation fails  */}
-      {errors.exampleRequired && <span>This field is required</span>}
-      
-      <input type="submit" />
-    </form>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* include validation with required or other standard HTML validation rules */}
+            <input
+              {...register("name", { required: true })}
+              placeholder="Name"
+            />
+            {/* errors will return when field validation fails  */}
+            {errors.name && <span>This field is required</span>}
+
+            <input type="submit" />
+          </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>{}}>save</Button> 
+          {/* <Button
+            onClick={() => {
+              submitFileFolder(newFolder);
+              setOpen(false, name);
+            }}
+          >
+            save
+          </Button> */}
         </DialogActions>
       </Dialog>
     </div>
   );
-}  
+};
 
 export default CreateFolderForm;
