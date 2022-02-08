@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import { createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
+import { FolderFile } from "./Model/FolderFile";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,11 +19,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  name: string;
-  type: "Folder" | "File";
+  folderFile: FolderFile;
+  onClick: (folderFile: FolderFile) => void;
 }
 
-const FolderFileItem = ({ name, type }: Props) => {
+const FolderFileItem = ({ folderFile, onClick }: Props) => {
+  const { type, name, id, parentId } = folderFile;
   const classes = useStyles();
 
   return (
@@ -30,7 +32,7 @@ const FolderFileItem = ({ name, type }: Props) => {
       {type === "Folder" ? (
         <FolderOpenIcon
           onDoubleClick={() => {
-            alert("das");
+            onClick(folderFile);
           }}
         />
       ) : (

@@ -31,6 +31,11 @@ interface IDialogs {
   createFileDlg: boolean;
 }
 
+interface IFolderList {
+  currentFolder?: FolderFile;
+  folderLists: FolderFile[];
+}
+
 const FolderList = () => {
   const classes = useStyles();
   const [{ createFolderDlg, createFileDlg }, setDialogs] = useState<IDialogs>({
@@ -38,16 +43,33 @@ const FolderList = () => {
     createFileDlg: false,
   });
 
-  const [folderList, setFolderList] = useState<FolderFile[]>([]);
+  const [folderList, setFolderList] = useState<IFolderList>({
+    currentFolder: undefined,
+    folderLists: [],
+  });
 
   const submitFileFolder = (folderFile: FolderFile) => {
     console.log("cuurent state", folderList, folderFile);
     setFolderList((prevState) => {
-      console.log(prevState, [...prevState, folderFile]);
-      return [...prevState, folderFile];
+      console.log(prevState, folderFile);
+      return {
+        ...prevState,
+        folderLists: [...prevState.folderLists, folderFile],
+      };
     });
 
     console.log("cuurent state", folderList);
+  };
+
+  const setCurrentFolder = (folderFile: FolderFile) => {
+    console.log("cuurent state", folderList, folderFile);
+    setFolderList((prevState) => {
+      console.log(prevState, folderFile);
+      return {
+        ...prevState,
+        currentFolder: folderFile,
+      };
+    });
   };
 
   useEffect(() => {
@@ -55,7 +77,10 @@ const FolderList = () => {
     (async () => {
       const directoryList = await getDirectoryList();
       if (directoryList) {
-        setFolderList(directoryList);
+        setFolderList({
+          currentFolder: undefined,
+          folderLists: directoryList,
+        });
       }
     })();
     return () => {
@@ -91,10 +116,27 @@ const FolderList = () => {
         </Button>
       </div>
 
+      {console.log(folderList)}
       <div className={classes.contentPanel}>
-        {folderList.map((x) => (
-          <FolderFileItem name={x.name} type={x.type} key={x.id} />
-        ))}
+        {!folderList.currentFolder
+          ? folderList.folderLists
+              .filter((x) => !x.parentId)
+              .map((x) => (
+                <FolderFileItem
+                  folderFile={x}
+                  key={x.id}
+                  onClick={setCurrentFolder}
+                />
+              ))
+          : folderList.folderLists
+              .filter((x) => x.parentId === folderList.currentFolder?.id)
+              .map((x) => (
+                <FolderFileItem
+                  folderFile={x}
+                  key={x.id}
+                  onClick={setCurrentFolder}
+                />
+              ))}
       </div>
       <CreateFolderForm
         open={createFolderDlg}
