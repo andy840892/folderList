@@ -3,18 +3,18 @@ import { FolderFile } from "../Model/FolderFile";
 const mokeData :FolderFile[]=[
     {
         name:"Folder1",
-        id:"12312312",
+        id:"1",
         type:"Folder"
     },
     {
         name:"Folder2",
-        id:"12312312",
+        id:"2",
         type:"Folder"
     },
     {
         name:"TextFile",
-        id:"12312312",
-        type:"Folder"
+        id:"3",
+        type:"File"
     }, 
     
 ]

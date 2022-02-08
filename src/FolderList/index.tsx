@@ -1,8 +1,11 @@
 import { Button, createStyles, makeStyles, Theme } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+import BasicBreadcrumbs from "./BreadCrumbs";
 import { DialogType, FolderDlgType } from "./Constrant/DialogType";
 import CreateFileForm from "./CreateFileForm";
 import CreateFolderForm from "./CreateFolderForm";
+import FolderFileItem from "./FolderFileItem";
+ 
 import { FolderFile } from "./Model/FolderFile";
 import { getDirectoryList } from "./Service/service";
  
@@ -60,11 +63,13 @@ const FolderList= () => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
+
+          <BasicBreadcrumbs />
             <div className={classes.buttonPanel}>
               <Button variant="contained"   onClick={() => switchDialog(true, "createFolderDlg")}>Create Folder</Button> 
                <Button variant="contained" onClick={() => switchDialog(true, "createFileDlg")}>Create File</Button> 
              </div>
-          {folderList.map((x)=>(<>{x.name}</>))}
+          {folderList.map((x)=>(<FolderFileItem name={x.name} type={x.type}/> ))}
          
           <CreateFolderForm     open={createFolderDlg}
               setOpen={switchDialog}   name="createFolderDlg"/>
