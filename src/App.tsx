@@ -1,15 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
+import React from 'react'; 
 import './App.css';
+import { Button } from '@mui/material';
+import FolderList from './FolderList';
+
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+      <FolderList />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <Button variant="text" color="primary">Tex1t</Button>
         <a
           className="App-link"
           href="https://reactjs.org"
