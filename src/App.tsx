@@ -8,9 +8,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <FolderList />
-        <Button variant="text" color="primary">
-          CLick
-        </Button>
       </header>
     </div>
   );

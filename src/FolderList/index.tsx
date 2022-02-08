@@ -101,6 +101,18 @@ const FolderList = () => {
   return (
     <div className={classes.root}>
       <BasicBreadcrumbs />
+      <Button
+        variant="text"
+        color="primary"
+        onClick={() => {
+          const currentFolder = folderList.folderLists.filter(
+            (x) => x.id === folderList.currentFolder?.parentId
+          )[0];
+          setCurrentFolder(currentFolder);
+        }}
+      >
+        Back
+      </Button>
       <div className={classes.buttonPanel}>
         <Button
           variant="contained"
@@ -142,13 +154,15 @@ const FolderList = () => {
         open={createFolderDlg}
         setOpen={switchDialog}
         submitFileFolder={submitFileFolder}
-        name="createFolderDlg"
+        dialogName="createFolderDlg"
+        currentFolder={folderList.currentFolder}
       />
       <CreateFileForm
         open={createFileDlg}
         setOpen={switchDialog}
         submitFileFolder={submitFileFolder}
-        name="createFileDlg"
+        dialogName="createFileDlg"
+        currentFolder={folderList.currentFolder}
       />
     </div>
   );

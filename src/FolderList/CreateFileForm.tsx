@@ -18,12 +18,19 @@ type Inputs = {
 interface Props {
   open: boolean;
   setOpen: (open: boolean, name: keyof typeof DialogType) => void;
-  name: keyof typeof DialogType;
+  dialogName: keyof typeof DialogType;
   onDialogCloseFunc?: () => void;
   submitFileFolder: (folderFile: FolderFile) => void;
+  currentFolder?: FolderFile;
 }
 
-const CreateFileForm = ({ open, setOpen, name, submitFileFolder }: Props) => {
+const CreateFileForm = ({
+  open,
+  setOpen,
+  dialogName,
+  submitFileFolder,
+  currentFolder,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -36,18 +43,19 @@ const CreateFileForm = ({ open, setOpen, name, submitFileFolder }: Props) => {
     const newFolder: FolderFile = {
       name: data.name,
       id: Math.random().toString(),
+      parentId: currentFolder?.id,
       type: "File",
     };
 
     submitFileFolder(newFolder);
-    setOpen(false, name);
+    setOpen(false, dialogName);
   };
 
   // console.log(watch("name")); // watch input value by passing the name of it
 
   return (
     <div>
-      <Dialog open={open} onClose={() => setOpen(false, name)}>
+      <Dialog open={open} onClose={() => setOpen(false, dialogName)}>
         <DialogTitle>Subscribe</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
