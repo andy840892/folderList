@@ -33,7 +33,7 @@ interface IDialogs {
 
 interface IFolderList {
   currentFolder?: FolderFile;
-  folderLists: FolderFile[];
+  list: FolderFile[];
 }
 
 const FolderList = () => {
@@ -45,26 +45,26 @@ const FolderList = () => {
 
   const [folderList, setFolderList] = useState<IFolderList>({
     currentFolder: undefined,
-    folderLists: [],
+    list: [],
   });
 
   const submitFileFolder = (folderFile: FolderFile) => {
-    console.log("cuurent state", folderList, folderFile);
+    // console.log("cuurent state", folderList, folderFile);
     setFolderList((prevState) => {
       console.log(prevState, folderFile);
       return {
         ...prevState,
-        folderLists: [...prevState.folderLists, folderFile],
+        list: [...prevState.list, folderFile],
       };
     });
 
-    console.log("cuurent state", folderList);
+    // console.log("cuurent state", folderList);
   };
 
   const setCurrentFolder = (folderFile: FolderFile) => {
-    console.log("cuurent state", folderList, folderFile);
+    // console.log("cuurent state", folderList, folderFile);
     setFolderList((prevState) => {
-      console.log(prevState, folderFile);
+      // console.log(prevState, folderFile);
       return {
         ...prevState,
         currentFolder: folderFile,
@@ -79,7 +79,7 @@ const FolderList = () => {
       if (directoryList) {
         setFolderList({
           currentFolder: undefined,
-          folderLists: directoryList,
+          list: directoryList,
         });
       }
     })();
@@ -100,12 +100,15 @@ const FolderList = () => {
 
   return (
     <div className={classes.root}>
-      <BasicBreadcrumbs />
+      <BasicBreadcrumbs
+        list={folderList.list}
+        currentFolder={folderList.currentFolder}
+      />
       <Button
         variant="text"
         color="primary"
         onClick={() => {
-          const currentFolder = folderList.folderLists.filter(
+          const currentFolder = folderList.list.filter(
             (x) => x.id === folderList.currentFolder?.parentId
           )[0];
           setCurrentFolder(currentFolder);
@@ -128,10 +131,10 @@ const FolderList = () => {
         </Button>
       </div>
 
-      {console.log(folderList)}
+      {/* {console.log(folderList)} */}
       <div className={classes.contentPanel}>
         {!folderList.currentFolder
-          ? folderList.folderLists
+          ? folderList.list
               .filter((x) => !x.parentId)
               .map((x) => (
                 <FolderFileItem
@@ -140,7 +143,7 @@ const FolderList = () => {
                   onClick={setCurrentFolder}
                 />
               ))
-          : folderList.folderLists
+          : folderList.list
               .filter((x) => x.parentId === folderList.currentFolder?.id)
               .map((x) => (
                 <FolderFileItem

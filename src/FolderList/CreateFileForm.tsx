@@ -39,7 +39,7 @@ const CreateFileForm = ({
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log("form data", data);
+    // console.log("form data", data);
     const newFolder: FolderFile = {
       name: data.name,
       id: Math.random().toString(),
