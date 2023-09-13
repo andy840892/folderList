@@ -42,7 +42,7 @@ const BasicBreadcrumbs = ({ list, currentFolder }: Prop) => {
 
   console.log("^^^^^^^^", result);
   console.log("1", result);
-  console.log("2", result);
+
   useEffect(() => {
     getBreadlist(list, currentFolder);
   }, [currentFolder]);
